@@ -12,6 +12,8 @@ ruff = "^0.4.1"
 django-taggit = "^5.0.1"
 django-allauth = {extras = ["socialaccount"], version = "^0.63.1"}
 python-dotenv = "^1.0.1"
+django-tailwind = "^3.8.0"
+django-browser-reload = "^1.12.1"
 
 
 [build-system]

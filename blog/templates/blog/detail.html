@@ -1,29 +1,54 @@
+{% extends "blog/base.html" %}
 {% block content %}
-    <h1>{{ post.title }}</h1>
-    <p>Published {{ post.published_date }} by {{ post.author }}</p>
-    {{ post.body|linebreaks }}
+    <h2 class="text-3xl m-5">{{ post.title }}</h2>
 
+    <section class="m-5">
+        <p>Published {{ post.published_date }} by {{ post.author }}</p>
+    </section>
+
+    <section class="m-5">
+    {{ post.body|linebreaks }}
+    </section>
+
+    <section class="m-5">
     {% with post.comments.count as total_comments %}
         <h2>{{ total_comments }} comment{{ total_comments|pluralize }}</h2>
     {% endwith %}
 
-    {% for comment in post.comments.all %}
-        <div>
-            <p>Comment by {{ comment.username }}{{ comment.created }}</p>
-            {{ comment.body|linebreaks }}
-        </div>
-    {% empty %}
-        <p>There are no comments yet.</p>
-    {% endfor %}
-
-    {% if new_comment %}
-    <h2>Your comment has been added.</h2>
-    {% else %}
-    <h3><a name="commentform"></a>Leave a Comment</h3>
-    <form action="#commentform" method="post">
-        {{ comment_form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Add comment"></p>
-    </form>
+        {% for comment in post.comments.all %}
+            <div>
+                <p>Comment by {{ comment.username }}{{ comment.created }}</p>
+                {{ comment.body|linebreaks }}
+            </div>
+        {% empty %}
+            <p>There are no comments yet.</p>
+        {% endfor %}
+            {% if new_comment %}
+            <h2>Your comment has been added.</h2>
+            {% else %}
+    </section>
+    
+    <hr>
+    <section class="m-5">
+        <h3><a name="commentform"></a>Leave a Comment</h3>
+        <form action="#commentform" method="post">
+            {% csrf_token %}
+            {% for field in comment_form %}
+                <div class="mb-4">
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <p class="text-sm text-gray-500">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% if field.errors %}
+                        <p class="text-sm text-red-600">{{ field.errors }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <p>
+                <input type="submit" value="Add comment" class="small-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            </p>
+        </form>
+    </section>
     {% endif %}
 {% endblock %}
