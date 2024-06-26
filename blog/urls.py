@@ -11,8 +11,6 @@ urlpatterns = [
         name='detail'
     ),
     path('testing/', views.testing, name='testing'),
-
     path('tag/<str:tag_slug>/',
         views.list, name='posts_by_tag'),
-
 ]
